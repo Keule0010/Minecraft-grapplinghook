@@ -1,0 +1,11 @@
+name: GrapplingHook
+version: 2.4.3
+author: Keule2
+
+main: de.keule.grapplinghook.main.Main
+
+commands:
+   enterhaken:
+   grapplinghook:
+   gh:
+   eh:
