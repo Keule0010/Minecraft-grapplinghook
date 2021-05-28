@@ -1,0 +1,10 @@
+main: de.keule.gh.main.GHPlugin
+name: GrapplingHook
+author: Keule2
+version: 2.6
+description: Grappling Hook Plugin
+softdepend: [WorldGuard]
+
+commands:
+    grapplinghook:
+        aliases: [gh]
