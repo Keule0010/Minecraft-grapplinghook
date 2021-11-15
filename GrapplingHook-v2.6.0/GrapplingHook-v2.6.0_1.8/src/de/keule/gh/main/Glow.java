@@ -32,7 +32,7 @@ public class Glow {
 				return 0;
 			}
 			public String getName() {
-				return null;
+				return "grappling_hook_glow";
 			}
 			public int getMaxLevel() {
 				return 0;
