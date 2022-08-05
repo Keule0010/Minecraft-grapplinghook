@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="maven-antrun-" default="main"  >
+<target name="main">
+  <copy file="D:\Eclipse\Java_Workspace\grapplinghook\target/grapplinghook-3.0.jar" todir="D:\Minecraft\Server\Test Server\1.18\plugins"/>
+</target>
+</project>

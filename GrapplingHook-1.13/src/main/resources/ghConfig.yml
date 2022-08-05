@@ -1,0 +1,43 @@
+## Example ##
+#<grapplingHookName>:
+#  options...
+#
+# See default example below for the avaible options.
+# If you want that every player can use the grappling hook without giving permission to the player/group just set permission to none.
+
+grapplingHook:
+  permission: 'none'
+  displayName: '&6Grapling Hook'
+  unlimitedUsesName: '&cunlimited'
+  unlimitedUses: false
+  glow: true
+  useAir: false
+  crafting: true
+  allWorlds: true
+  unbreakable: true
+  noFallDamage: true
+  useFloatingBlocks: true
+  cancleOnEntityCatch: true
+  destroyWhenNoMoreUses: false
+  maxUses: 0
+  destroyDelay: 10
+  cooldown: 2
+  gravity: 0.35
+  throw_speed_multiplier: 0.25
+  pullSound: ENTITY_ENDERMAN_TELEPORT
+  breakSound: ENTITY_ITEM_BREAK
+  recipe:
+    slot1: ''
+    slot2: ''
+    slot3: Stick
+    slot4: ''
+    slot5: Stick
+    slot6: String
+    slot7: Stick
+    slot8: ''
+    slot9: Iron_Ingot
+  lore:
+    - ' '
+    - '&7You have &6%uses% &7uses left'
+  worlds: []
+ 

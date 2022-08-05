@@ -1,0 +1,5 @@
+config-version: 1
+
+prefix: '&7[&6GrapplingHook&7]'
+fallDamageRemove: 1.25
+allFishingRods: false
