@@ -1,0 +1,60 @@
+package de.keule.gh.main;
+
+import java.lang.reflect.Field;
+
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.enchantments.EnchantmentTarget;
+import org.bukkit.inventory.ItemStack;
+
+public class Glow {
+	private static boolean isRegistered = false;
+	private static final int ID = 49875478;
+	private static Enchantment glow;
+	
+	@SuppressWarnings("deprecation")
+	public static void init() {
+		isRegistered = true;
+		glow = Enchantment.getById(ID);
+		if (glow != null)
+			return;
+
+		Field f;
+		try {
+			f = Enchantment.class.getDeclaredField("acceptingNew");
+			f.setAccessible(true);
+			f.set(null, true);
+		} catch (Exception e) {
+			return;
+		}
+
+		glow = new Enchantment(ID) {
+			public int getStartLevel() {
+				return 0;
+			}
+			public String getName() {
+				return "grappling_hook_glow";
+			}
+			public int getMaxLevel() {
+				return 0;
+			}
+			public EnchantmentTarget getItemTarget() {
+				return null;
+			}
+			public boolean conflictsWith(Enchantment arg0) {
+				return false;
+			}
+			public boolean canEnchantItem(ItemStack arg0) {
+				return false;
+			}
+		};
+
+		Enchantment.registerEnchantment(glow);
+		f.setAccessible(false);
+	}
+	
+	public static Enchantment get() {
+		if(!isRegistered)
+			init();
+		return glow;
+	}
+}
