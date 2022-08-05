@@ -1,0 +1,56 @@
+Plugin:
+   prefix: "&7[&6GrapplingHook&7] "
+   grapplingHookName: "&6Grappling hook"
+   useAir: false
+   useInAllWorlds: false
+   onFishingDisable: false #Beta(Works only in 1.8)
+   crafting: false
+   allRods: true
+   cooldown: 2.0
+   throw_speed_multiplier: 0.25
+   gravity: 0.35
+   noFallDamage: true
+   fallDamageRemove: 1.25
+   maxUses: 0
+   destroyWhenNoMoreUses: false
+   
+Messages:
+   reload: "%prefix%&7Config reloaded!"
+   noperm: "%prefix%&4You have no permissions to do that."
+   unknownCMD: "%prefix%&7Unknown command or wrong syntax."
+   onlyNumbers: "%prefix%&4Only numbers!"
+   useInAllWorlds: "%prefix%&7Use in all worlds is now: %state%."
+   setSound: "%prefix%&7You set the sound to: %sound%"
+   setWorld: "%prefix%&2The world: %world% has been added to the list."
+   removeWorld: "%prefix%&4The world: %world% has been removed from the list."
+   alreadyInList: "%prefix%&7World: %world%) is already in the list."
+   isNotInList: "%prefix%&7World: %world% isn't in the list."
+   cooldown: "%prefix%&7One Moment!(%timeLeft%s)"
+   setCooldown: "%prefix%&7New cooldown: %newTime%s"
+   useAir: "%prefix%&7UseAir is now: %state%"
+   crafting: "%prefix%&7Crafting is now: %state%"
+   setUses: "%prefix%&7You set the uses to: %newvalue%"
+   usesLeft: "&cUses left"
+   
+Sound:
+   grapplinghookSound: ENTITY_ENDERMEN_TELEPORT
+
+#To take affect the whole server must be reloaded or retsarted
+Recipe:
+   slot1: ""
+   slot2: ""
+   slot3: "Stick"
+   slot4: ""
+   slot5: "Stick"
+   slot6: "String"
+   slot7: "Stick"
+   slot8: ""
+   slot9: "Iron_Ingot"
+
+Lore:
+   lore1: ""
+   lore2: ""
+   lore3: ""
+   
+#All worlds where the grappling hook is active are in this list
+WorldList: []
