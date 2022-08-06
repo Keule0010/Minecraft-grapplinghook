@@ -1,7 +1,16 @@
 package de.keule.mc.grapplinghook.main;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -9,28 +18,29 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.BlockFace;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.FishHook;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
+import de.keule.mc.grapplinghhok.adapters.itemstack.CreateGrapplingHook;
+import de.keule.mc.grapplinghhok.adapters.worldguard.WorldGuardLogic;
 import de.keule.mc.grapplinghook.config.ConfVars;
 import de.keule.mc.grapplinghook.config.ConfigKey;
 import de.keule.mc.grapplinghook.config.ConfigManager;
 import de.keule.mc.grapplinghook.config.Settings;
-import de.keule.mc.grapplinghook.crafting.GHRecipe;
-import de.keule.mc.grapplinghook.crafting.Glow;
+import de.keule.mc.grapplinghook.recipe.GHRecipe;
 import de.keule.mc.grapplinghook.utils.Cooldown;
 import de.keule.mc.grapplinghook.utils.NoFallDamage;
-import de.keule.mc.grapplinghook.worldguard.WorldGuardLogic;
+import de.keule.mc.grapplinghook.version.VersionUtil;
+import de.keule.mc.grapplinghook.worldguard.WorldGuardManager;
 
 public class GrapplingHook {
+	private static final Pattern VALID_NAME = Pattern.compile("[a-z0-9_-]+");
+
 	private static final List<GrapplingHook> grapplingHooks = new ArrayList<>();
-	public static final GrapplingHook All_RODS = null;
-	private static final char COLOR_CODE = (char) 167;
+	public static GrapplingHook All_RODS;
 
 	private boolean cancleOnEntityCatch;
 	private boolean permissionRequired;
@@ -69,67 +79,57 @@ public class GrapplingHook {
 	public GrapplingHook(String path) {
 		configPath = path;
 
-		cancleOnEntityCatch = ConfigManager.getGrapplingHookConfig().getBlooean(path + ".cancleOnEntityCatch");
-		destroyOnNoUses = ConfigManager.getGrapplingHookConfig().getBlooean(path + ".destroyWhenNoMoreUses");
-		useFloatingBlocks = ConfigManager.getGrapplingHookConfig().getBlooean(path + ".useFloatingBlocks");
-		noFallDamage = ConfigManager.getGrapplingHookConfig().getBlooean(path + ".noFallDamage");
-		unbreakable = ConfigManager.getGrapplingHookConfig().getBlooean(path + ".unbreakable");
-		unlimited = ConfigManager.getGrapplingHookConfig().getBlooean(path + ".unlimitedUses");
-		allWorlds = ConfigManager.getGrapplingHookConfig().getBlooean(path + ".allWorlds");
-		crafting = ConfigManager.getGrapplingHookConfig().getBlooean(path + ".crafting");
-		useAir = ConfigManager.getGrapplingHookConfig().getBlooean(path + ".useAir");
-		glow = ConfigManager.getGrapplingHookConfig().getBlooean(path + ".glow");
+		cancleOnEntityCatch = ConfigManager.getGrapplingHookConfig().getBlooean(path + ".cancleOnEntityCatch", true);
+		destroyOnNoUses = ConfigManager.getGrapplingHookConfig().getBlooean(path + ".destroyWhenNoMoreUses", false);
+		useFloatingBlocks = ConfigManager.getGrapplingHookConfig().getBlooean(path + ".useFloatingBlocks", true);
+		noFallDamage = ConfigManager.getGrapplingHookConfig().getBlooean(path + ".noFallDamage", true);
+		unbreakable = ConfigManager.getGrapplingHookConfig().getBlooean(path + ".unbreakable", false);
+		unlimited = ConfigManager.getGrapplingHookConfig().getBlooean(path + ".unlimitedUses", false);
+		allWorlds = ConfigManager.getGrapplingHookConfig().getBlooean(path + ".allWorlds", true);
+		crafting = ConfigManager.getGrapplingHookConfig().getBlooean(path + ".crafting", false);
+		useAir = ConfigManager.getGrapplingHookConfig().getBlooean(path + ".useAir", false);
+		glow = ConfigManager.getGrapplingHookConfig().getBlooean(path + ".glow", false);
 
-		unlimitedName = ConfigManager.getGrapplingHookConfig().getTranslatedString(path + ".unlimitedUsesName");
-		displayName = ConfigManager.getGrapplingHookConfig().getTranslatedString(path + ".displayName");
-		permission = ConfigManager.getGrapplingHookConfig().getString(path + ".permission");
+		unlimitedName = ConfigManager.getGrapplingHookConfig().getTranslatedString(path + ".unlimitedUsesName",
+				"&cunlimited");
+		displayName = ConfigManager.getGrapplingHookConfig().getTranslatedString(path + ".displayName", null);
+		permission = ConfigManager.getGrapplingHookConfig().getString(path + ".permission", "none");
 		permissionRequired = permission != null && !permission.isEmpty() && !permission.equalsIgnoreCase("none");
 
 		pullSound = ConfigManager.getGrapplingHookConfig().getSound(path + ".pullSound",
-				Sound.ENTITY_ENDERMAN_TELEPORT);
-		breakSound = ConfigManager.getGrapplingHookConfig().getSound(path + ".breakSound", Sound.ENTITY_ITEM_BREAK);
+				VersionUtil.getDefaultSounds().getPullSound());
+		breakSound = ConfigManager.getGrapplingHookConfig().getSound(path + ".breakSound",
+				VersionUtil.getDefaultSounds().getPullSound());
 
-		multiplier = ConfigManager.getGrapplingHookConfig().getDouble(path + ".throw_speed_multiplier");
-		cooldown = ConfigManager.getGrapplingHookConfig().getInt(path + ".cooldown");
-		gravity = ConfigManager.getGrapplingHookConfig().getDouble(path + ".gravity");
+		multiplier = ConfigManager.getGrapplingHookConfig().getDouble(path + ".throw_speed_multiplier", 0.25);
+		gravity = ConfigManager.getGrapplingHookConfig().getDouble(path + ".gravity", 0.35);
 
 		worlds = ConfigManager.getGrapplingHookConfig().getStringList(path + ".worlds");
 		lore = ConfigManager.getGrapplingHookConfig().getStringList(path + ".lore");
 
-		destroyDelay = ConfigManager.getGrapplingHookConfig().getInt(path + ".destroyDelay");
-		maxUses = ConfigManager.getGrapplingHookConfig().getInt(path + ".maxUses");
+		destroyDelay = ConfigManager.getGrapplingHookConfig().getInt(path + ".destroyDelay", 10);
+		cooldown = ConfigManager.getGrapplingHookConfig().getInt(path + ".cooldown", 2);
+		maxUses = ConfigManager.getGrapplingHookConfig().getInt(path + ".maxUses", 10);
 
 		cooldownLogic = new Cooldown(cooldown);
-		recipe = new GHRecipe(this);
+		if (!isAllRods() && ConfigManager.getGrapplingHookConfig().pathExists(path + ".recipe"))
+			recipe = new GHRecipe(this);
+		else
+			recipe = new GHRecipe(null);
 	}
 
 	public ItemStack getGrapplingHook() {
 		if (gh != null)
 			return gh;
 
-		gh = new ItemStack(Material.FISHING_ROD);
-		ItemMeta meta = gh.getItemMeta();
+		CreateGrapplingHook createGH = VersionUtil.getCreateGrapplingHook();
+		gh = createGH.create(VersionUtil.getGlow(), getDisplayName(), getLore(getMaxUses()), isGlow(), isUnbreakable());
 
-		meta.setDisplayName(displayName);
-		meta.setLore(getLore(maxUses));
-
-		if (glow)
-			if (Glow.get() == null)
-				meta.addEnchant(Enchantment.DEPTH_STRIDER, 1, false);
-			else
-				meta.addEnchant(Glow.get(), 1, true);
-
-		if (unbreakable) {
-			meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
-			meta.setUnbreakable(true);
-		}
-
-		gh.setItemMeta(meta);
 		return gh;
 	}
 
 	private int getUsesLeft(Player p) {
-		if (unlimited)
+		if (unlimited || isAllRods())
 			return Integer.MAX_VALUE;
 
 		final ItemStack gh = getPlayerGrapplingHook(p);
@@ -141,7 +141,7 @@ public class GrapplingHook {
 		if (lore == null || lore.isEmpty())
 			return 0;
 
-		final String l = lore.get(lore.size() - 1).replaceAll(COLOR_CODE + "", "").replaceAll("\\s+", "");
+		final String l = lore.get(lore.size() - 1).replaceAll(ChatColor.COLOR_CHAR + "", "").replaceAll("\\s+", "");
 		if (l.equals("a"))
 			return maxUses;
 
@@ -154,12 +154,16 @@ public class GrapplingHook {
 	}
 
 	public List<String> getLore(int uses) {
+		if (isAllRods())
+			return null;
+
 		final List<String> newLore = new ArrayList<>();
 		for (String line : lore)
 			newLore.add(ChatColor.translateAlternateColorCodes('&', line).replace(ConfVars.PREFIX, Settings.getPrefix())
 					.replace(ConfVars.USES, getUsesString(uses)).replace(ConfVars.MAX_USES, getUsesString(maxUses)));
+
 		if (unlimited) {
-			newLore.add(COLOR_CODE + "a");
+			newLore.add(ChatColor.COLOR_CHAR + "a");
 			return newLore;
 		}
 
@@ -204,25 +208,25 @@ public class GrapplingHook {
 	}
 
 	private ItemStack getPlayerGrapplingHook(Player p) {
-		ItemStack is = p.getInventory().getItemInMainHand();
-		if (!equals(is))
-			is = p.getInventory().getItemInOffHand();
-
+		ItemStack is = VersionUtil.getInventoryOperations().getGrapplingHookFromActiveHand(p);
 		if (!equals(is))
 			return null;
 
 		return is;
 	}
 
-	public void checkAndPull(Player p, FishHook hook) {
+	public void checkAndPull(Player p, Location destination) {
 		final String pWorld = p.getLocation().getWorld().getName();
 
 		/* Check Grappling Hook Enabled In This World/Region */
-		WorldGuardLogic wg = GHPlugin.getInstance().getWorldGuardLogic();
-		if (isAllWorlds() || getWorlds().contains(pWorld) || wg.isPermitted(p)) {
-			if (wg.isForbidden(p))
+		if (WorldGuardManager.isWorldGuardEnabled()) {
+			WorldGuardLogic wg = VersionUtil.getWorldGuardLogic(null);
+			if (isAllWorlds() || getWorlds().contains(pWorld) || wg.isPermitted(p)) {
+				if (wg.isForbidden(p))
+					return;
+			} else
 				return;
-		} else
+		} else if (!isAllWorlds() && !getWorlds().contains(pWorld))
 			return;
 
 		/* Check Permission For Grappling Hook */
@@ -234,7 +238,8 @@ public class GrapplingHook {
 			return;
 
 		/* Check Permissions For World */
-		if (!p.isOp() && !(p.hasPermission(Permissions.GH_ALL_WORLDS.getPERM())
+		if (!p.isOp() && !(p.hasPermission(Permissions.DEFAULT_PLAYER.getPERM())
+				|| p.hasPermission(Permissions.GH_ALL_WORLDS.getPERM())
 				|| p.hasPermission("grapplinghook.world." + pWorld)))
 			return;
 
@@ -255,12 +260,12 @@ public class GrapplingHook {
 		}
 
 		/* Pull Player */
-		pullPlayer(p, hook, usesLeft - 1);
+		pullPlayer(p, destination, usesLeft - 1);
 	}
 
-	public void pullPlayer(Player p, FishHook hook, int newUses) {
+	public void pullPlayer(Player p, Location destination, int newUses) {
 		Location lc = p.getLocation();
-		Location to = hook.getLocation();
+		Location to = destination;
 
 		if (!useAir) {
 			if (!useFloatingBlocks) {
@@ -297,6 +302,10 @@ public class GrapplingHook {
 		if (newUses <= 0)
 			destroyHookOnNoUses(p);
 		updateLore(p, newUses);
+	}
+
+	private boolean isAllRods() {
+		return configPath.equals("allrods");
 	}
 
 	@Override
@@ -349,6 +358,18 @@ public class GrapplingHook {
 		return worlds;
 	}
 
+	public String getDisplayName() {
+		return isAllRods() ? null : displayName;
+	}
+
+	public boolean isUnbreakable() {
+		return unbreakable;
+	}
+
+	public boolean isGlow() {
+		return glow;
+	}
+
 	public boolean isAllWorlds() {
 		return allWorlds;
 	}
@@ -356,11 +377,40 @@ public class GrapplingHook {
 	public boolean isPermissionRequired() {
 		return permissionRequired;
 	}
-	
+
 	public String getPermission() {
 		return permission;
 	}
-	
+
+	public int getMaxUses() {
+		return maxUses;
+	}
+
+	public void printInfo(CommandSender s) {
+		s.sendMessage(Settings.getPrefix() + tr(" &7-------- &a" + getConfigPath() + " &7--------"));
+		Field[] allFields = GrapplingHook.class.getDeclaredFields();
+		for (Field field : allFields) {
+			if (!Modifier.isStatic(field.getModifiers()) && Modifier.isPrivate(field.getModifiers())) {
+				try {
+					if (field.getType() == boolean.class) {
+						s.sendMessage(
+								Settings.getPrefix() + tr(" &7" + field.getName() + ": &c" + field.getBoolean(this)));
+					} else {
+						if (field.getType() == ItemStack.class || field.getType() == Cooldown.class)
+							continue;
+						s.sendMessage(Settings.getPrefix()
+								+ tr(" &7" + field.getName() + ": &a" + field.get(this).toString()));
+					}
+				} catch (IllegalArgumentException | IllegalAccessException e) {
+				}
+			}
+		}
+	}
+
+	private String tr(String string) {
+		return ChatColor.translateAlternateColorCodes('&', string);
+	}
+
 	/* Static */
 	public static GrapplingHook getGrapplingHook(String grapplingHookName) {
 		for (GrapplingHook gh : GrapplingHook.getGrapplingHooks()) {
@@ -372,14 +422,60 @@ public class GrapplingHook {
 	}
 
 	public static void reloadGrapplingHooks() {
+		All_RODS = new GrapplingHook("allrods");
 		grapplingHooks.clear();
 
 		for (String key : ConfigManager.getGrapplingHookConfig().getKeys()) {
+			if (key.equals("allrods"))
+				continue;
 			grapplingHooks.add(new GrapplingHook(key));
 		}
 	}
 
 	public static List<GrapplingHook> getGrapplingHooks() {
 		return grapplingHooks;
+	}
+
+	/**
+	 * The name/config path may only contain {@code a-z 0-9 _ -} and may be a
+	 * maximum of 10 characters long as well as lower case.
+	 */
+	public static boolean checkName(String name) {
+		if (name.length() > 10)
+			return false;
+
+		if (!VALID_NAME.matcher(name).matches())
+			return false;
+
+		for (GrapplingHook grapplingHook : grapplingHooks) {
+			if (grapplingHook.getConfigPath().equals(name))
+				return false;
+		}
+
+		return true;
+	}
+
+	public static boolean createNew(String name) {
+		Scanner s = null;
+		try (InputStream inS = GrapplingHook.class.getResourceAsStream("/ghBlueprint.yml");
+				FileOutputStream fOut = new FileOutputStream(ConfigManager.getGrapplingHookConfig().getConfigFile(),
+						true)) {
+
+			BufferedInputStream bis = new BufferedInputStream(inS);
+			ByteArrayOutputStream buf = new ByteArrayOutputStream();
+			for (int result = bis.read(); result != -1; result = bis.read()) {
+				buf.write((byte) result);
+			}
+
+			String res = "\n" + buf.toString().replaceAll(ConfVars.GH_NAME, name);
+			fOut.write(res.getBytes());
+			return ConfigManager.reloadAll();
+		} catch (Exception e) {
+			Bukkit.getServer().getLogger().log(Level.SEVERE, "Couldn't read grappling hook blueprint!", e);
+		} finally {
+			if (s != null)
+				s.close();
+		}
+		return false;
 	}
 }

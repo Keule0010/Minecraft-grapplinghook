@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import de.keule.mc.grapplinghook.config.ConfVars;
 import de.keule.mc.grapplinghook.config.ConfigKey;
 import de.keule.mc.grapplinghook.config.ConfigManager;
+import de.keule.mc.grapplinghook.config.Settings;
 import de.keule.mc.grapplinghook.main.GHPlugin;
 import de.keule.mc.grapplinghook.main.GrapplingHook;
 import de.keule.mc.grapplinghook.main.Permissions;
@@ -67,6 +68,10 @@ public class GHCommand implements CommandExecutor, TabCompleter {
 		try {
 			switch (subCmd) {
 			case HELP:
+				int helpPage = 0;
+				if (args.length == 2)
+					helpPage = getInt(args[1], 1) - 1;
+				displayHelp(sender, helpPage);
 				return true;
 
 			case RELOAD:
@@ -76,9 +81,20 @@ public class GHCommand implements CommandExecutor, TabCompleter {
 					sender.sendMessage(getMessage(ConfigKey.SOMETHING_WENT_WRONG));
 				return true;
 
+			case ALL_RODS:
+				ConfigManager.getConfig().set(ConfigKey.ALL_RODS, !Settings.isAllRods());
+				if (ConfigManager.saveReloadAll())
+					sender.sendMessage(
+							getMessage(ConfigKey.ALL_RODS).replace(ConfVars.NEW_VALUE, Settings.isAllRods() + ""));
+				else
+					sender.sendMessage(getMessage(ConfigKey.SOMETHING_WENT_WRONG));
+				return true;
+
 			case LIST:
-				for (GrapplingHook gh : GrapplingHook.getGrapplingHooks())
-					sender.sendMessage(gh.getConfigPath());
+				int listPage = 0;
+				if (args.length == 2)
+					listPage = getInt(args[1], 1) - 1;
+				displayGrapplingHooks(sender, listPage);
 				return true;
 
 			case INFO:
@@ -89,6 +105,7 @@ public class GHCommand implements CommandExecutor, TabCompleter {
 					return true;
 				}
 
+				gh.printInfo(sender);
 				return true;
 
 			case GET:
@@ -121,14 +138,24 @@ public class GHCommand implements CommandExecutor, TabCompleter {
 				return true;
 
 			case CREATE:
-				// private static final Pattern VALID_KEY = Pattern.compile("[a-z0-9/._-]+");
-				// VALID_KEY.matcher(key).matches()
-				// Length: 10
-				// To lowerCase
+				final String name = args[1].toLowerCase();
+				if (!GrapplingHook.checkName(name)) {
+					sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Settings.getPrefix()
+							+ " &cThe name of the grappling hook is incorrect! &7You can only use the following characters(&cmax. 10&7):&a a-z 0-9 _ -"));
+					return true;
+				}
 
+				if (GrapplingHook.createNew(name))
+					sender.sendMessage(getMessage(ConfigKey.GH_CREATE).replace(ConfVars.GH_NAME, name));
+				else
+					sender.sendMessage(getMessage(ConfigKey.SOMETHING_WENT_WRONG));
 				return true;
 
-			case SET_DISPLAYNAME:
+			case DISPLAYNAME:
+				return true;
+
+			case COOLDOWN:
+
 				return true;
 
 			default:
@@ -141,6 +168,72 @@ public class GHCommand implements CommandExecutor, TabCompleter {
 					+ Arrays.toString(args) + ", Executor: " + sender.getName(), e);
 		}
 		return true;
+	}
+
+	/* Commands */
+	private void displayGrapplingHooks(CommandSender sender, int listPage) {
+		final int displayItems = 5;
+
+		int maxPages = GrapplingHook.getGrapplingHooks().size();
+		maxPages = calcMaxPages(displayItems, maxPages);
+
+		if (listPage < 0)
+			listPage = 0;
+		if (listPage >= maxPages)
+			listPage = maxPages - 1;
+
+		sender.sendMessage(getMessage(ConfigKey.LIST_HEADER).replace("%page%", (listPage + 1) + "")
+				.replace("%maxPages%", maxPages + ""));
+
+		final int startIndex = listPage * displayItems;
+
+		for (int i = startIndex; i < startIndex + displayItems && i < GrapplingHook.getGrapplingHooks().size(); i++) {
+			final GrapplingHook gh = GrapplingHook.getGrapplingHooks().get(i);
+			sender.sendMessage(getMessage(ConfigKey.LIST_ITEM).replace(ConfVars.GH_NAME, gh.getConfigPath())
+					.replace(ConfVars.DISPLAY_NAME, gh.getDisplayName()));
+		}
+	}
+
+	private void displayHelp(CommandSender sender, int helpPage) {
+		final int displayItems = 5;
+
+		int maxPages = 0;
+
+		// Calculate max pages based on permission level
+		for (SubCommand cmd : SubCommand.values()) {
+			if (sender.isOp() || sender.hasPermission(Permissions.ALL_CMD_PERM.getPERM())
+					|| sender.hasPermission(cmd.getPermission().getPERM()))
+				maxPages++;
+		}
+		maxPages = calcMaxPages(displayItems, maxPages);
+
+		if (helpPage < 0)
+			helpPage = 0;
+		if (helpPage >= maxPages)
+			helpPage = maxPages - 1;
+
+		sender.sendMessage(getMessage(ConfigKey.HELP_HEADER).replace("%page%", (helpPage + 1) + "")
+				.replace("%maxPages%", maxPages + ""));
+
+		final int startIndex = helpPage * displayItems;
+
+		for (int i = startIndex; i < startIndex + displayItems && i < SubCommand.values().length; i++) {
+			final SubCommand subCommand = SubCommand.values()[i];
+			if (sender.isOp() || sender.hasPermission(subCommand.getPermission().getPERM())
+					|| sender.hasPermission(Permissions.ALL_CMD_PERM.getPERM())) {
+				sender.sendMessage(getMessage(ConfigKey.HELP_ITEM).replace(ConfVars.SUB_CMD, subCommand.getCmd())
+						.replace(ConfVars.USAGE, subCommand.getUsage()));
+			}
+		}
+	}
+
+	/* Helpers */
+	private int calcMaxPages(final int displayItems, int items) {
+		int pages = items / displayItems;
+		if (items % displayItems != 0)
+			pages++;
+		items = pages;
+		return items;
 	}
 
 	private String getMessage(ConfigKey key) {
@@ -159,13 +252,15 @@ public class GHCommand implements CommandExecutor, TabCompleter {
 //		return str.substring(0, str.length() - 1);
 //	}
 //
-//	private static int getInt(String s, int def) {
-//		try {
-//			return Integer.parseInt(s);
-//		} catch (NumberFormatException e) {
-//			return def;
-//		}
-//	}
+	private static int getInt(String s, int def) {
+		if (s == null)
+			return def;
+		try {
+			return Integer.parseInt(s);
+		} catch (NumberFormatException e) {
+			return def;
+		}
+	}
 
 	@Override
 	public List<String> onTabComplete(CommandSender s, Command command, String label, String[] args) {
@@ -201,11 +296,13 @@ public class GHCommand implements CommandExecutor, TabCompleter {
 
 enum SubCommand {
 	HELP("help", false, Permissions.HELP, 0, null), RELOAD("reload", false, Permissions.RELOAD, 0, null),
-	LIST("list", false, Permissions.LIST, 0, "<Page>"), INFO("info", false, Permissions.INFO, 1, "<GrapplingHookName>"),
+	ALL_RODS("allRods", false, Permissions.ALL_RODS, 0, null), LIST("list", false, Permissions.LIST, 0, "<Page>"),
+	INFO("info", false, Permissions.INFO, 1, "<GrapplingHookName>"),
 	GET("get", true, Permissions.GET, 1, "<GrapplingHookName>"),
 	GIVE("give", false, Permissions.GIVE, 2, "<GrapplingHookName> <PlayerName>"),
 	CREATE("create", false, Permissions.CREATE, 1, "<GrapplingHookName>"),
-	SET_DISPLAYNAME("displayName", false, Permissions.DISPLAYNAME, 2, "<GrapplingHookName> <DisplayName>");
+	DISPLAYNAME("displayName", false, Permissions.DISPLAYNAME, 2, "<GrapplingHookName> <DisplayName>"),
+	COOLDOWN("cooldown", false, Permissions.COOLDOWN, 2, "<GrapplingHookName> <CoolDown>"),;
 
 	public static final String CMD = "/GrapplingHook";
 	private static List<String> subCommands;

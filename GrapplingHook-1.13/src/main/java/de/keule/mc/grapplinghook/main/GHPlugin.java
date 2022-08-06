@@ -5,56 +5,66 @@ import org.bukkit.ChatColor;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import de.keule.mc.grapplinghhok.adapters.worldguard.WorldGuardLogic;
 import de.keule.mc.grapplinghook.commands.GHCommand;
 import de.keule.mc.grapplinghook.config.ConfigManager;
 import de.keule.mc.grapplinghook.config.Settings;
-import de.keule.mc.grapplinghook.crafting.Glow;
 import de.keule.mc.grapplinghook.events.GrapplingHookEvents;
 import de.keule.mc.grapplinghook.events.PlayerEvents;
-import de.keule.mc.grapplinghook.update.UpdateUtil;
-import de.keule.mc.grapplinghook.utils.VersionUtil;
-import de.keule.mc.grapplinghook.worldguard.WorldGuardLogic;
+import de.keule.mc.grapplinghook.utils.TimeUtil;
+import de.keule.mc.grapplinghook.utils.UpdateUtil;
+import de.keule.mc.grapplinghook.version.VersionUtil;
+import de.keule.mc.grapplinghook.worldguard.WorldGuardManager;
 
 public class GHPlugin extends JavaPlugin {
 	private static GHPlugin plugin;
 
 	private boolean canRegisterRecipe = true;
+
 	private WorldGuardLogic worldGuardLogic;
 
 	@Override
 	public void onLoad() {
 		plugin = this;
 
-		/* Register Glow-Enchantment */
-		Glow.register(plugin);
+		/* Check Version */
+		VersionUtil.versionCheck(plugin);
+
+		/* Register Enchantment */
+		VersionUtil.getGlow().register(plugin);
 
 		/* Register Flags */
-		worldGuardLogic = new WorldGuardLogic(plugin);
-		worldGuardLogic.registerFlags();
+		if (WorldGuardManager.isWorldGuardEnabled())
+			VersionUtil.getWorldGuardLogic(this).init();
 	}
 
 	@Override
 	public void onEnable() {
+		final long start = System.currentTimeMillis();
+		println("&8+-----------------------------------------------+");
 		/* Loading Configs */
 		ConfigManager.init(plugin);
-
-		/* Load Dependencies */
-		worldGuardLogic.loadWorldGuard();
-
-		/* Check Version */
-		VersionUtil.versionCheck();
 
 		/* Register Events */
 		registerEvents();
 
 		/* Register Commands */
-		getCommand("grapplinghook").setExecutor(new GHCommand(plugin));
+		registerCommands();
 
 		/* Check for updates */
 		UpdateUtil.checkForUpdate(plugin);
 
 		/* Disable Register */
 		canRegisterRecipe = false;
+
+		println("  &8WorldGuard " + (WorldGuardManager.isWorldGuardEnabled() ? "&2loaded" : "&cnot loaded"));
+		println("  &8Grappling hooks loaded: &c" + GrapplingHook.getGrapplingHooks().size());
+		println("&8+---------------[ &5By Keule2 &8(&a" + TimeUtil.formatMillis(System.currentTimeMillis() - start)
+				+ "&8) ]-------------+");
+	}
+
+	private void registerCommands() {
+		getCommand("grapplinghook").setExecutor(new GHCommand(plugin));
 	}
 
 	private void registerEvents() {
@@ -68,7 +78,7 @@ public class GHPlugin extends JavaPlugin {
 	public void onDisable() {
 	}
 
-	public static void sendConsoleMesssage(String msg) {
+	public static void println(String msg) {
 		Bukkit.getServer().getConsoleSender()
 				.sendMessage(Settings.getPrefix() + " " + ChatColor.translateAlternateColorCodes('&', msg));
 	}

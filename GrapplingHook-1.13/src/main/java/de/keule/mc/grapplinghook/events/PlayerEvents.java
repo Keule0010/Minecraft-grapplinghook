@@ -45,10 +45,13 @@ public class PlayerEvents implements Listener {
 				if (gh.isCrafting()) {
 					Player p = (Player) e.getView().getPlayer();
 
-					if (!p.isOp() && !p.hasPermission(Permissions.CRAFT.getPERM())) {
+					System.out.println(p.hasPermission(Permissions.DEFAULT_PLAYER.getPERM()));
+					if (!p.isOp() && !(p.hasPermission(Permissions.DEFAULT_PLAYER.getPERM())
+							|| p.hasPermission(Permissions.CRAFT.getPERM()))) {
 						e.getInventory().setResult(null);
 						p.sendMessage(ConfigManager.getMsgConfig().getMessage(ConfigKey.NO_PERM));
-					} else if (!p.isOp() && gh.isPermissionRequired() && !p.hasPermission(gh.getPermission())) {
+					} else if (gh.isPermissionRequired() && !p.isOp() && !p.hasPermission(gh.getPermission())) {
+						System.out.println("LEL");
 						e.getInventory().setResult(null);
 						p.sendMessage(ConfigManager.getMsgConfig().getMessage(ConfigKey.NO_PERM));
 					}

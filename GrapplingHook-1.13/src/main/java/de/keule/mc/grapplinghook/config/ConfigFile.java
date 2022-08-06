@@ -114,6 +114,10 @@ public class ConfigFile {
 		return config;
 	}
 
+	public File getConfigFile() {
+		return configFile;
+	}
+
 	public boolean pathExists(String path) {
 		return config.contains(path);
 	}
@@ -143,10 +147,11 @@ public class ConfigFile {
 	}
 
 	public Material getMaterial(String route, Material def) {
-		final String mat = config.getString(route).toUpperCase();
+		String mat = config.getString(route);
 		if (mat == null || mat.isEmpty())
 			return def;
 
+		mat = mat.toUpperCase();
 		Material matt = Material.getMaterial(mat);
 		if (matt == null)
 			return def;
@@ -162,9 +167,10 @@ public class ConfigFile {
 	}
 
 	public Sound getSound(String route, Sound def) {
-		final String sound = config.getString(route).toUpperCase();
+		String sound = config.getString(route);
 		if (sound == null || sound.isEmpty())
 			return def;
+		sound = sound.toUpperCase();
 		try {
 			return Sound.valueOf(sound);
 		} catch (IllegalArgumentException e) {
@@ -181,9 +187,11 @@ public class ConfigFile {
 	}
 
 	public Effect getEffect(String route, Effect def) {
-		final String effect = config.getString(route);
+		String effect = config.getString(route);
 		if (effect == null || effect.isEmpty())
 			return def;
+
+		effect = effect.toUpperCase();
 		try {
 			return Effect.valueOf(effect);
 		} catch (IllegalArgumentException e) {
@@ -200,9 +208,10 @@ public class ConfigFile {
 	}
 
 	public GameMode getGameMode(String route, GameMode def) {
-		final String gm = config.getString(route);
+		String gm = config.getString(route);
 		if (gm == null || gm.isEmpty())
 			return def;
+		gm = gm.toUpperCase();
 		try {
 			return GameMode.valueOf(gm);
 		} catch (IllegalArgumentException e) {
@@ -230,8 +239,14 @@ public class ConfigFile {
 	 * @return A string and already replaces the prefix and {@link ChatColor}s
 	 */
 	public String getTranslatedString(String route) {
-		return ChatColor.translateAlternateColorCodes('&',
-				config.getString(route, "").replace(ConfVars.PREFIX, Settings.getPrefix()));
+		return getTranslatedString(route, "");
+	}
+
+	public String getTranslatedString(String route, String def) {
+		final String str = config.getString(route, def);
+		if (str == null)
+			return def;
+		return ChatColor.translateAlternateColorCodes('&', str.replace(ConfVars.PREFIX, Settings.getPrefix()));
 	}
 
 	public boolean getBlooean(ConfigKey key) {
@@ -240,6 +255,10 @@ public class ConfigFile {
 
 	public boolean getBlooean(String key) {
 		return config.getBoolean(key);
+	}
+
+	public boolean getBlooean(String key, boolean def) {
+		return config.getBoolean(key, def);
 	}
 
 	public int getInt(ConfigKey key) {

@@ -10,19 +10,20 @@ import org.bukkit.inventory.ItemStack;
 
 import de.keule.mc.grapplinghook.config.Settings;
 import de.keule.mc.grapplinghook.main.GrapplingHook;
+import de.keule.mc.grapplinghook.version.VersionUtil;
 
 public class GrapplingHookEvents implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onRectract(PlayerFishEvent e) {
 		if (e.getState() == PlayerFishEvent.State.FISHING || e.getState() == PlayerFishEvent.State.CAUGHT_FISH
-				|| e.getState() == PlayerFishEvent.State.BITE)
+				|| e.getState().toString().equalsIgnoreCase("BITE"))
 			return;
 
 		final Player p = e.getPlayer();
 
 		if (Settings.isAllRods()) {
-			GrapplingHook.All_RODS.checkAndPull(p, e.getHook());
+			GrapplingHook.All_RODS.checkAndPull(p, VersionUtil.getFishEventAdapter().getHookLocation(e));
 			return;
 		}
 
@@ -33,14 +34,12 @@ public class GrapplingHookEvents implements Listener {
 		if (gh.cancelOnEntityCatch() && e.getState() == PlayerFishEvent.State.CAUGHT_ENTITY)
 			return;
 
-		gh.checkAndPull(p, e.getHook());
+		gh.checkAndPull(p, VersionUtil.getFishEventAdapter().getHookLocation(e));
 	}
 
 	private GrapplingHook getGrapplingHook(PlayerFishEvent e) {
-		ItemStack is = e.getPlayer().getInventory().getItemInMainHand();
-		if (is.getType() != Material.FISHING_ROD)
-			is = e.getPlayer().getInventory().getItemInOffHand();
-		if (is.getType() != Material.FISHING_ROD)
+		final ItemStack is = VersionUtil.getInventoryOperations().getGrapplingHookFromActiveHand(e.getPlayer());
+		if (is == null || is.getType() != Material.FISHING_ROD)
 			return null;
 
 		for (GrapplingHook gh : GrapplingHook.getGrapplingHooks()) {

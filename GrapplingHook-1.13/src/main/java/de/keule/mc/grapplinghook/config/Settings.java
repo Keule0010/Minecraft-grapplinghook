@@ -6,9 +6,9 @@ import de.keule.mc.grapplinghook.main.GrapplingHook;
 import de.keule.mc.grapplinghook.utils.NoFallDamage;
 
 public class Settings {
+	private static String prefix = "[" + GrapplingHook.class.getSimpleName() + "]";
 	private static long fallDamageRemove;
 	private static boolean allRods;
-	private static String prefix;
 
 	public static void reloadValues() {
 		prefix = ChatColor.translateAlternateColorCodes('&', ConfigManager.getConfig().getString(ConfigKey.PREFIX));

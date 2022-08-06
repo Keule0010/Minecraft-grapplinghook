@@ -43,4 +43,9 @@ public class Cooldown {
 			return;
 		cooldown.remove(p.getUniqueId());
 	}
+
+	@Override
+	public String toString() {
+		return cooldownTime + "";
+	}
 }
