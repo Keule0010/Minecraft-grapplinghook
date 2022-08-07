@@ -2,8 +2,7 @@ For some more/latest information look on Spigotmc: https://www.spigotmc.org/reso
 
 # Grappling hook
 
-A brief video made by myself:
-[YT-Video](https://www.youtube.com/watch?v=a4B1McFUxEQ)
+A brief video made by myself: [YT-Video](https://www.youtube.com/watch?v=a4B1McFUxEQ)
 <br/>
 ### Features:
 ***Customize item name<br/>
@@ -69,7 +68,7 @@ You can use all commands, if you have the permission ```grapplinghook.cmds.*``` 
 /gh setPlayerUses [PlayerName] [Number]
 ```
 
-<br/>
+
 ### Permissions: <br/>
 ***OP players have all permissions
 You can use all commands, if you have the permission ```grapplinghook.cmds.*``` or you are OP***
@@ -80,7 +79,7 @@ grapplinghook.worlds.* | The player can use the grappling hook in all worlds wic
 grapplinghook.world.[worldName] | The player can use the grappling hook in the mentioned world wich the permission contains
 grapplinghook.removeWorld.[worldName] | The player can't use the grappling hook in the mentioned world wich the permission contains
 ```
-<br/>
+
 ### Config:
 ```
 %prefix% | Give you the prefix wich is specified in the config
@@ -90,7 +89,7 @@ grapplinghook.removeWorld.[worldName] | The player can't use the grappling hook 
 %name% | Displayes a username
 %uses% | Displayes the uses left or when you have unlimited uses, it displayes the unlimitedUsesName value (can only be used in the lore)
 ```
-Config file:
+***Config file:***
 ``` YML
 Plugin:
   prefix: '&7[&6GrapplingHook&7]' #Is used in messages with the %prefix% placeholder
@@ -150,7 +149,7 @@ Lore:
 Worlds:
 - ''
 ```
-<br/>
+
 ### Support: <br/>
 ***For Support please use the discussion section here on Spigot or dm me. Please don't ask for support  in the reviewes.***
 <br/>
@@ -158,8 +157,5 @@ Worlds:
 Version 2.4.1 and above supports mc-version 1.8-1.16 tested<br/>
 Version 2.3 and above supports mc-version 1.8-1.15 tested<br/>
 Version 2.2.1 and lower supports mc-version: 1.8 tested(1.9-1.12 should work)<br/>
-A video made by myself for version 2.3:<br/>
-[Version 2.3](https://www.youtube.com/watch?v=QrF1VMeEzIQ)<br/>
-
-Video made by myself for version 2.0:<br/>
-[Version 2.0](https://www.youtube.com/watch?v=MeHDN55omFc)<br/>
+Video made by myself for version 2.3: [Version 2.3](https://www.youtube.com/watch?v=QrF1VMeEzIQ)<br/>
+Video made by myself for version 2.0: [Version 2.0](https://www.youtube.com/watch?v=MeHDN55omFc)<br/>
