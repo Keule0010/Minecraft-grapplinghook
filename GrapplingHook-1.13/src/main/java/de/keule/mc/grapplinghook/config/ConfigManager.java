@@ -18,14 +18,14 @@ public class ConfigManager {
 		reloadAll();
 	}
 
-	public static boolean saveReloadAll() {
-		boolean msg = msgConfig.saveAndReload();
-		boolean gh = ghConfig.saveAndReload();
-		boolean cfg = config.saveAndReload();
-
-		Settings.reloadValues();
-		return msg && gh && cfg;
-	}
+//	public static boolean saveReloadAll() {
+//		boolean msg = msgConfig.saveAndReload();
+//		boolean gh = ghConfig.saveAndReload();
+//		boolean cfg = config.saveAndReload();
+//
+//		Settings.reloadValues();
+//		return msg && gh && cfg;
+//	}
 
 	public static void saveAll() {
 		msgConfig.save();
@@ -40,6 +40,20 @@ public class ConfigManager {
 
 		Settings.reloadValues();
 		return msg && gh && cfg;
+	}
+
+	public static boolean saveGHConfigReloadAll() {
+		boolean gh = getGrapplingHookConfig().save();
+		return reloadAll() && gh;
+	}
+
+	public static boolean saveConfigReloadAll() {
+		boolean gh = getConfig().save();
+		return reloadAll() && gh;
+	}
+
+	public static boolean saveGHConfig() {
+		return getGrapplingHookConfig().save();
 	}
 
 	public static ConfigFile getGrapplingHookConfig() {

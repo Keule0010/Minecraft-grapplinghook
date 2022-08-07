@@ -21,12 +21,12 @@ public class GHRecipe {
 	}
 
 	public void init(GHPlugin pl) {
-		ghRecipe = VersionUtil.getGhShapedRecipe().getRecipe(pl, gh.getGrapplingHook(), gh.getConfigPath());
+		ghRecipe = VersionUtil.getGhShapedRecipe().getRecipe(pl, gh.getGrapplingHook(), gh.getName());
 		ghRecipe.shape("123", "456", "789");
 
 		for (int i = 1; i < 10; i++) {
 			final Material mat = ConfigManager.getGrapplingHookConfig()
-					.getMaterial(gh.getConfigPath() + ".recipe.slot" + i, null);
+					.getMaterial(gh.getName() + ".recipe.slot" + i, null);
 			if (mat != null)
 				ghRecipe.setIngredient(Character.forDigit(i, 10), mat);
 		}

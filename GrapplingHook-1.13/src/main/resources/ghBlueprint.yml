@@ -10,7 +10,7 @@
   unbreakable: true
   noFallDamage: true
   useFloatingBlocks: true
-  cancleOnEntityCatch: true
+  cancelOnEntityCatch: true
   destroyWhenNoMoreUses: false
   maxUses: 10
   destroyDelay: 10

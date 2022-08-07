@@ -45,7 +45,6 @@ public class PlayerEvents implements Listener {
 				if (gh.isCrafting()) {
 					Player p = (Player) e.getView().getPlayer();
 
-					System.out.println(p.hasPermission(Permissions.DEFAULT_PLAYER.getPERM()));
 					if (!p.isOp() && !(p.hasPermission(Permissions.DEFAULT_PLAYER.getPERM())
 							|| p.hasPermission(Permissions.CRAFT.getPERM()))) {
 						e.getInventory().setResult(null);

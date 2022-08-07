@@ -5,14 +5,14 @@
   unlimitedUses: false
   glow: true
   useAir: false
-  crafting: true
+  crafting: false
   allWorlds: true
   unbreakable: true
   noFallDamage: true
   useFloatingBlocks: true
-  cancleOnEntityCatch: true
+  cancelOnEntityCatch: true
   destroyWhenNoMoreUses: false
-  maxUses: 0
+  maxUses: 10
   destroyDelay: 10
   cooldown: 2
   gravity: 0.35

@@ -23,7 +23,7 @@ public class GrapplingHookEvents implements Listener {
 		final Player p = e.getPlayer();
 
 		if (Settings.isAllRods()) {
-			GrapplingHook.All_RODS.checkAndPull(p, VersionUtil.getFishEventAdapter().getHookLocation(e));
+			GrapplingHook.ALL_RODS.checkAndPull(p, VersionUtil.getFishEventAdapter().getHookLocation(e));
 			return;
 		}
 

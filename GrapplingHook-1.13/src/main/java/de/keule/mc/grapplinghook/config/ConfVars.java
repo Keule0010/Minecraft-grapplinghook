@@ -10,6 +10,8 @@ public class ConfVars {
 	public static final String PLAYER = "%player%";
 	public static final String PREFIX = "%prefix%";
 	public static final String USAGE = "%usage%";
+	public static final String VALUE = "%value%";
+	public static final String WORLD = "%world%";
 	public static final String USES = "%uses%";
 	public static final String CMD = "%cmd%";
 }

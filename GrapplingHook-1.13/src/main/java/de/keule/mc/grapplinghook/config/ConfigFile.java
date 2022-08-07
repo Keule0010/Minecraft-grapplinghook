@@ -29,6 +29,9 @@ public class ConfigFile {
 
 	public ConfigFile(Plugin pl, String fileName) {
 		this.pl = pl;
+		if (!pl.getDataFolder().exists())
+			pl.getDataFolder().mkdirs();
+
 		this.configFile = new File(pl.getDataFolder(), fileName);
 
 		if (!configFile.exists()) {

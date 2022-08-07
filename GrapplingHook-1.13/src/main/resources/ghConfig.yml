@@ -18,7 +18,7 @@
 #  unbreakable: true
 #  noFallDamage: true
 #  useFloatingBlocks: true
-#  cancleOnEntityCatch: true
+#  cancelOnEntityCatch: true
 #  destroyWhenNoMoreUses: false
 #  maxUses: 0
 #  destroyDelay: 10
@@ -49,7 +49,7 @@ allrods:
   unbreakable: false
   noFallDamage: true
   useFloatingBlocks: true
-  cancleOnEntityCatch: true
+  cancelOnEntityCatch: true
   cooldown: 2
   gravity: 0.35
   throw_speed_multiplier: 0.25
