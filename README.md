@@ -6,31 +6,32 @@ A brief video made by myself:
 [YT-Video](https://www.youtube.com/watch?v=a4B1McFUxEQ)
 <br/>
 ### Features:
-***Customize item name
-Customize Cooldown
-Customize sound
-Customize lore
-Customize recipe (requires reload or restart)
-WorldGuard flag
-Simple autocomplete
-Full console support
-Set a limited amount of uses
-No fall damage on landing (changeable in the config)
-Set the gravity that works when throwing
-Set the distance
-You can craft the grappling hook (when you change the name or lore you have to reload or restart the server. Changing the lore or name "destroys" all old GH)
-Use any fishing rod as the grappling hook or only the crafted ones(change "allRods" in the config)
-Decide for each world individuell where the grappling hook is enable or enable the grappling hook for all worlds
-Decide if you want to use the air as a pull-object
-And more
-WorldGuard:
-Add the gh-pl flag to a region with the allow option to use the grapplinghook there. If you don't want to use the grapplinghook in a region, just use the deny option and to use the options from the grapplinghook plugin just use the option none.***
+***Customize item name<br/>
+Customize Cooldown<br/>
+Customize sound<br/>
+Customize lore<br/>
+Customize recipe (requires reload or restart)<br/>
+WorldGuard flag<br/>
+Simple autocomplete<br/>
+Full console support<br/>
+Set a limited amount of uses<br/>
+No fall damage on landing (changeable in the config)<br/>
+Set the gravity that works when throwing<br/>
+Set the distance<br/>
+You can craft the grappling hook (when you change the name or lore you have to reload or restart the server. Changing the lore or name "destroys" all old GH)<br/>
+Use any fishing rod as the grappling hook or only the crafted ones(change "allRods" in the config)<br/>
+Decide for each world individuell where the grappling hook is enable or enable the grappling hook for all worlds<br/>
+Decide if you want to use the air as a pull-object<br/>
+And more<br/>
+WorldGuard:<br/>
+Add the gh-pl flag to a region with the allow option to use the grapplinghook there. If you don't want to use the grapplinghook in a region, just use the deny option and to use the options from the grapplinghook plugin just use the option none.<br/>***
 <br/>
 ### Commands ```| <permission>```:
 ***All commands can start with /grapplinghook or /gh
 You can use all commands, if you have the permission ```grapplinghook.cmds.*``` or you are OP***
 
 #### Player:
+```
 /gh help [page] | <grapplinghook.help> To see commands
 /gh reload | <grapplinghook.cmd.reload> Reload the config of this plugin
 /gh resetConfig | <grapplinghook.cmd.resetConfig> Restores the default values of the config
@@ -58,31 +59,37 @@ You can use all commands, if you have the permission ```grapplinghook.cmds.*``` 
 /gh useFloatingBlocks | <grapplinghook.cmd.useFloatingBlocks> Enable/Disable using floating blocks in the air as a pull object
 /gh unbreakable | <grapplinghook.cmd.unbreakable> Enable/Disable unbreakability for the GH
 /gh allRods | <grapplinghook.cmd.allRods> Enable/Disable all fishingrods as grappling hooks
+```
 #### Console differences:
+```
 /gh setWorld [worldName]
 /gh removeWorld/rmWorld [worldName]
 /gh give [username]
 /gh addUses [PlayerName] [Number]
 /gh setPlayerUses [PlayerName] [Number]
+```
 
 <br/>
 ### Permissions:
 ***OP players have all permissions
-You can use all commands, if you have the permission ```grapplinghook.cmds.*``` or you are OP
+You can use all commands, if you have the permission ```grapplinghook.cmds.*``` or you are OP***
+```
 grapplinghook.cmd.autoComplete | To use the auto complete function***
 grapplinghook.craft | The player can craft the grappling hook
 grapplinghook.worlds.* | The player can use the grappling hook in all worlds wich are in the list
 grapplinghook.world.[worldName] | The player can use the grappling hook in the mentioned world wich the permission contains
 grapplinghook.removeWorld.[worldName] | The player can't use the grappling hook in the mentioned world wich the permission contains
-
+```
 <br/>
 ### Config:
+```
 %prefix% | Give you the prefix wich is specified in the config
 %world% | Give you the world wich you added or removed from the list
 %timeLeft% | Give you the time remaining befor you can use the grappling hook again
 %newValue% | Gives you a new value
 %name% | Displayes a username
 %uses% | Displayes the uses left or when you have unlimited uses, it displayes the unlimitedUsesName value (can only be used in the lore)
+```
 Config file:
 ``` YML
 Plugin:
@@ -148,11 +155,11 @@ Worlds:
 ***For Support please use the discussion section here on Spigot or dm me. Please don't ask for support  in the reviewes.***
 <br/>
 ### Version information:
-Version 2.4.1 and above supports mc-version 1.8-1.16 tested
-Version 2.3 and above supports mc-version 1.8-1.15 tested
-Version 2.2.1 and lower supports mc-version: 1.8 tested(1.9-1.12 should work)
-A video made by myself for version 2.3:
-[Version 2.3](https://www.youtube.com/watch?v=QrF1VMeEzIQ)
+Version 2.4.1 and above supports mc-version 1.8-1.16 tested<br/>
+Version 2.3 and above supports mc-version 1.8-1.15 tested<br/>
+Version 2.2.1 and lower supports mc-version: 1.8 tested(1.9-1.12 should work)<br/>
+A video made by myself for version 2.3:<br/>
+[Version 2.3](https://www.youtube.com/watch?v=QrF1VMeEzIQ)<br/>
 
-Video made by myself for version 2.0:
-[Version 2.0](https://www.youtube.com/watch?v=MeHDN55omFc)
+Video made by myself for version 2.0:<br/>
+[Version 2.0](https://www.youtube.com/watch?v=MeHDN55omFc)<br/>
