@@ -57,6 +57,9 @@ public class GHPlugin extends JavaPlugin {
 		/* Disable Register */
 		canRegisterRecipe = false;
 
+		println("  &8Server Version: &a" + VersionUtil.getServerVersion() + "&8 -> API-Version: &a"
+				+ (VersionUtil.isNewApi() ? "1.13 and above" : "1.8 - 1.12")
+				+ (VersionUtil.isUnsupported() ? " &8(&cThe plugin was not tested on this server version!&8)" : ""));
 		println("  &8WorldGuard " + (WorldGuardManager.isWorldGuardEnabled() ? "&2loaded" : "&cnot loaded"));
 		println("  &8Grappling hooks loaded: &c" + GrapplingHook.getGrapplingHooks().size());
 		println("&8+---------------[ &5By Keule2 &8(&a" + TimeUtil.formatMillis(System.currentTimeMillis() - start)

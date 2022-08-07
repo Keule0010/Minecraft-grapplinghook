@@ -34,7 +34,7 @@
 						<phase>install</phase>
 						<configuration>
 							<target>
-								<copy file="${project.build.directory}/${project.build.finalName}.jar" todir="D:\Minecraft\Server\Test Server\1.18\plugins" />
+								<copy file="${project.build.directory}/${project.build.finalName}.jar" todir="D:\Minecraft\Server\Test Server\1.19\plugins" />
 								<copy file="${project.build.directory}/${project.build.finalName}.jar" todir="D:\Minecraft\Server\Test Server\1.8\plugins" />
 							</target>
 						</configuration>

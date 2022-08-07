@@ -34,11 +34,13 @@ public class VersionUtil {
 	private static WorldGuardLogic worldguardLogic;
 	private static GHShapedRecipe ghShapedRecipe;
 	private static CreateGrapplingHook createGH;
+	private static boolean unsupported = false;
+	private static String fullServerVersion;
 	private static boolean newApi = false;
 	private static Glow glow;
 
 	public static void versionCheck(Plugin pl) {
-		final String fullServerVersion = Bukkit.getBukkitVersion().split("-")[0];
+		fullServerVersion = Bukkit.getBukkitVersion().split("-")[0];
 		int serverVersion = 13;
 		try {
 			serverVersion = Integer.parseInt(fullServerVersion.split("\\.")[1]);
@@ -52,9 +54,12 @@ public class VersionUtil {
 		if (serverVersion >= 13) {
 			newApi = true;
 			GHPlugin.println("&2Server version " + fullServerVersion + " identified using new API (1.13 and above).");
+			if (serverVersion > 19)
+				unsupported = true;
 		} else if (serverVersion >= 8 && serverVersion <= 12) {
 			GHPlugin.println("&2Server version " + fullServerVersion + " identified using old API (1.8 until 1.12).");
 		} else {
+			unsupported = true;
 			GHPlugin.println(
 					"&4Unsupported server version (not tested): " + fullServerVersion + "! &7Running old API!");
 		}
@@ -137,5 +142,13 @@ public class VersionUtil {
 		if (isNewApi())
 			return new DefaultSound_v_1_13();
 		return new DefaultSound_v_1_8();
+	}
+
+	public static String getServerVersion() {
+		return fullServerVersion;
+	}
+
+	public static boolean isUnsupported() {
+		return unsupported;
 	}
 }
