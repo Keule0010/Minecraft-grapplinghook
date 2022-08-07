@@ -70,7 +70,7 @@ You can use all commands, if you have the permission ```grapplinghook.cmds.*``` 
 ```
 
 <br/>
-### Permissions:
+### Permissions: <br/>
 ***OP players have all permissions
 You can use all commands, if you have the permission ```grapplinghook.cmds.*``` or you are OP***
 ```
@@ -151,10 +151,10 @@ Worlds:
 - ''
 ```
 <br/>
-### Support:
+### Support: <br/>
 ***For Support please use the discussion section here on Spigot or dm me. Please don't ask for support  in the reviewes.***
 <br/>
-### Version information:
+### Version information: <br/>
 Version 2.4.1 and above supports mc-version 1.8-1.16 tested<br/>
 Version 2.3 and above supports mc-version 1.8-1.15 tested<br/>
 Version 2.2.1 and lower supports mc-version: 1.8 tested(1.9-1.12 should work)<br/>
