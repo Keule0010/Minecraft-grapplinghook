@@ -1,0 +1,65 @@
+## Example-Config Structure ##
+#<grapplingHookName>:
+#  options...
+#
+# To create a new grappling hook either use the in-game command /gh create <name> or just copy the example below, 
+# replace <grapplingHookName> with a unique name (only a-z 0-9 _ - are allowed, max 10 long, lower case), comment out all lines and change the settings to your liking. 
+# If you want that every player can use the grappling hook without giving permission to the player/group just set permission to none. 
+#
+# If you are using all fishing rods as grappling hooks you can change the settings for that under the allrods (already exists).
+#
+# !!WARNINGS!!
+#  - CRAFTING:
+#     A recipe has to be unique obviously. When you change the recipe, name, lore or glow you have to reload/restart(better) the server.
+#  - CHANGING NAME/LORE:
+#    Grappling hooks which are already in the game will stob wroking after changing the display name or lore.
+#
+## Example-Real ##
+#<grapplingHookName>:
+#  permission: 'none'
+#  displayName: '&6Grapling Hook'
+#  unlimitedUsesName: '&cunlimited'
+#  unlimitedUses: false
+#  glow: true
+#  useAir: false
+#  crafting: true
+#  allWorlds: true
+#  unbreakable: true
+#  noFallDamage: true
+#  useFloatingBlocks: true
+#  cancelOnEntityCatch: true
+#  destroyWhenNoMoreUses: false
+#  maxUses: 10
+#  destroyDelay: 10
+#  cooldown: 2
+#  gravity: 0.35
+#  throw_speed_multiplier: 0.25
+#  pullSound: ENTITY_ENDERMAN_TELEPORT
+#  breakSound: ENTITY_ITEM_BREAK
+#  recipe:
+#    slot1: ''
+#    slot2: ''
+#    slot3: Stick
+#    slot4: ''
+#    slot5: Stick
+#    slot6: String
+#    slot7: Stick
+#    slot8: ''
+#    slot9: Iron_Ingot
+#  lore:
+#    - ' '
+#    - '&7You have &6%uses% &7uses left'
+#  worlds: []
+ 
+allrods:
+  permission: 'none'
+  useAir: false
+  allWorlds: true
+  unbreakable: false
+  noFallDamage: true
+  useFloatingBlocks: true
+  cancelOnEntityCatch: true
+  cooldown: 2
+  gravity: 0.35
+  throw_speed_multiplier: 0.25
+  worlds: []

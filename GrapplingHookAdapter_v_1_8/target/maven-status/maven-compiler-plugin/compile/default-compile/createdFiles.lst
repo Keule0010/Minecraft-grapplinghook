@@ -1,0 +1,15 @@
+de\keule\mc\grapplinghhok\adapters\events\PlayerFischEventAdapter.class
+de\keule\mc\grapplinghhok\adapters\worldguard\WorldGuardLogic_v_1_8.class
+de\keule\mc\grapplinghhok\adapters\events\PlayerFischEventAdapter_v_1_8.class
+de\keule\mc\grapplinghhok\adapters\itemstack\CreateGrapplingHook.class
+de\keule\mc\grapplinghhok\adapters\recipe\GHShapedRecipe_v_1_8.class
+de\keule\mc\grapplinghhok\adapters\player\InventoryOperations_v_1_8.class
+de\keule\mc\grapplinghhok\adapters\enchantment\Glow_v_1_8.class
+de\keule\mc\grapplinghhok\adapters\recipe\GHShapedRecipe.class
+de\keule\mc\grapplinghhok\adapters\enchantment\Glow.class
+de\keule\mc\grapplinghhok\adapters\player\InventoryOperations.class
+de\keule\mc\grapplinghhok\adapters\sound\DefaultSound_v_1_8.class
+de\keule\mc\grapplinghhok\adapters\enchantment\Glow_v_1_8$1.class
+de\keule\mc\grapplinghhok\adapters\sound\DefaultSounds.class
+de\keule\mc\grapplinghhok\adapters\worldguard\WorldGuardLogic.class
+de\keule\mc\grapplinghhok\adapters\itemstack\CreateGrapplingHook_v_1_8.class

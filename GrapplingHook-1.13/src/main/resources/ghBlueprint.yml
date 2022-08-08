@@ -1,0 +1,35 @@
+%ghName%:
+  permission: 'none'
+  displayName: '&6%ghName%'
+  unlimitedUsesName: '&cunlimited'
+  unlimitedUses: false
+  glow: true
+  useAir: false
+  crafting: false
+  allWorlds: true
+  unbreakable: true
+  noFallDamage: true
+  useFloatingBlocks: true
+  cancelOnEntityCatch: true
+  destroyWhenNoMoreUses: false
+  maxUses: 10
+  destroyDelay: 10
+  cooldown: 2
+  gravity: 0.35
+  throw_speed_multiplier: 0.25
+  pullSound: ENTITY_ENDERMAN_TELEPORT
+  breakSound: ENTITY_ITEM_BREAK
+  recipe:
+    slot1: ''
+    slot2: ''
+    slot3: Stick
+    slot4: ''
+    slot5: Stick
+    slot6: String
+    slot7: Stick
+    slot8: ''
+    slot9: Iron_Ingot
+  lore:
+    - ' '
+    - '&7You have &6%uses% &7uses left'
+  worlds: []
