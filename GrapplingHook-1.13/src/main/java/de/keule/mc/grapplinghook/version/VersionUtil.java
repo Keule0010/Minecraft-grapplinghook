@@ -15,8 +15,6 @@ import de.keule.mc.grapplinghhok.adapters.player.InventoryOperations;
 import de.keule.mc.grapplinghhok.adapters.player.InventoryOperations_v_1_8;
 import de.keule.mc.grapplinghhok.adapters.recipe.GHShapedRecipe;
 import de.keule.mc.grapplinghhok.adapters.recipe.GHShapedRecipe_v_1_8;
-import de.keule.mc.grapplinghhok.adapters.sound.DefaultSound_v_1_8;
-import de.keule.mc.grapplinghhok.adapters.sound.DefaultSounds;
 import de.keule.mc.grapplinghhok.adapters.worldguard.WorldGuardLogic;
 import de.keule.mc.grapplinghhok.adapters.worldguard.WorldGuardLogic_v_1_8;
 import de.keule.mc.grapplinghook.adapters.enchantment.Glow_v_1_13;
@@ -24,7 +22,6 @@ import de.keule.mc.grapplinghook.adapters.events.PlayerFischEventAdapter_v_1_13;
 import de.keule.mc.grapplinghook.adapters.itemstack.CreateGrapplingHook_v_1_13;
 import de.keule.mc.grapplinghook.adapters.player.InventoryOperations_v_1_13;
 import de.keule.mc.grapplinghook.adapters.recipe.GHShapedRecipe_v_1_13;
-import de.keule.mc.grapplinghook.adapters.sound.DefaultSound_v_1_13;
 import de.keule.mc.grapplinghook.adapters.worldguard.WorldGuardLogic_v_1_13;
 import de.keule.mc.grapplinghook.main.GHPlugin;
 
@@ -37,11 +34,12 @@ public class VersionUtil {
 	private static boolean unsupported = false;
 	private static String fullServerVersion;
 	private static boolean newApi = false;
+	private static int serverVersion;
 	private static Glow glow;
 
 	public static void versionCheck(Plugin pl) {
 		fullServerVersion = Bukkit.getBukkitVersion().split("-")[0];
-		int serverVersion = 13;
+		serverVersion = 13;
 		try {
 			serverVersion = Integer.parseInt(fullServerVersion.split("\\.")[1]);
 		} catch (Exception e) {
@@ -138,10 +136,20 @@ public class VersionUtil {
 		return glow;
 	}
 
-	public static DefaultSounds getDefaultSounds() {
-		if (isNewApi())
-			return new DefaultSound_v_1_13();
-		return new DefaultSound_v_1_8();
+	public static String getDefaultPullSound() {
+		if (serverVersion == 8)
+			return "ENDERMAN_TELEPORT";
+		else if (!isNewApi())
+			return "ENTITY_ENDERMEN_TELEPORT";
+		else
+			return "ENTITY_ENDERMAN_TELEPORT";
+	}
+
+	public static String getDefaultBreakSound() {
+		if (serverVersion == 8)
+			return "ITEM_BREAK";
+		else
+			return "ENTITY_ITEM_BREAK";
 	}
 
 	public static String getServerVersion() {

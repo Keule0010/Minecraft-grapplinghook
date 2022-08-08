@@ -3,7 +3,7 @@
 
 	<groupId>de.keule.mc</groupId>
 	<artifactId>grapplinghook</artifactId>
-	<version>3.0</version>
+	<version>3.1</version>
 	<packaging>jar</packaging>
 
 	<name>Grappling Hook</name>
@@ -35,7 +35,7 @@
 						<configuration>
 							<target>
 								<copy file="${project.build.directory}/${project.build.finalName}.jar" todir="/home/keule/Data/Minecraft/Server/Test Servers/1.19/plugins" />
-								<copy file="${project.build.directory}/${project.build.finalName}.jar" todir="/home/keule/Data/Minecraft/Server/Test Servers/1.8/plugins" />
+								<copy file="${project.build.directory}/${project.build.finalName}.jar" todir="/home/keule/Data/Minecraft/Server/Test Servers/1.9/plugins" />
 							</target>
 						</configuration>
 						<goals>

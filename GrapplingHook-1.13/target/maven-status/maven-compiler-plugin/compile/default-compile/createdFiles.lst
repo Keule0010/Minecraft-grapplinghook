@@ -23,6 +23,5 @@ de/keule/mc/grapplinghook/utils/Cooldown.class
 de/keule/mc/grapplinghook/commands/GHCommand.class
 de/keule/mc/grapplinghook/config/ConfigManager.class
 de/keule/mc/grapplinghook/adapters/enchantment/Glow_v_1_13$1.class
-de/keule/mc/grapplinghook/adapters/sound/DefaultSound_v_1_13.class
 de/keule/mc/grapplinghook/adapters/recipe/GHShapedRecipe_v_1_13.class
 de/keule/mc/grapplinghook/main/Permissions.class

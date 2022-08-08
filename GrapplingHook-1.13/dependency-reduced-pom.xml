@@ -4,7 +4,7 @@
   <groupId>de.keule.mc</groupId>
   <artifactId>grapplinghook</artifactId>
   <name>Grappling Hook</name>
-  <version>3.0</version>
+  <version>3.1</version>
   <description>A grappling hook plugin for minecraft.</description>
   <build>
     <resources>

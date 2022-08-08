@@ -106,10 +106,14 @@ public class GrapplingHook {
 				"none");
 		permissionRequired = permission != null && !permission.isEmpty() && !permission.equalsIgnoreCase("none");
 
-		pullSound = ConfigManager.getGrapplingHookConfig().getSound(path + "." + ConfigKey.PULL_SOUND.getGH_PATH(),
-				VersionUtil.getDefaultSounds().getPullSound());
-		breakSound = ConfigManager.getGrapplingHookConfig().getSound(path + "." + ConfigKey.BREAK_SOUND.getGH_PATH(),
-				VersionUtil.getDefaultSounds().getBreakSound());
+		try {
+			pullSound = ConfigManager.getGrapplingHookConfig().getSound(path + "." + ConfigKey.PULL_SOUND.getGH_PATH(),
+					Sound.valueOf(VersionUtil.getDefaultPullSound()));
+			breakSound = ConfigManager.getGrapplingHookConfig().getSound(
+					path + "." + ConfigKey.BREAK_SOUND.getGH_PATH(), Sound.valueOf(VersionUtil.getDefaultPullSound()));
+		} catch (Exception e) {
+
+		}
 
 		multiplier = ConfigManager.getGrapplingHookConfig()
 				.getDouble(path + "." + ConfigKey.THROW_SPEED_MULTI.getGH_PATH(), 0.25);
@@ -215,7 +219,8 @@ public class GrapplingHook {
 
 		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(GHPlugin.getInstance(), () -> {
 			p.getInventory().remove(is);
-			p.playSound(p.getLocation(), breakSound, 10, 100);
+			if (breakSound != null)
+				p.playSound(p.getLocation(), breakSound, 10, 100);
 		}, destroyDelay);
 	}
 
@@ -307,7 +312,8 @@ public class GrapplingHook {
 		p.setVelocity(v);
 
 		/* Update stuff */
-		p.playSound(lc, pullSound, 10, 100);
+		if (pullSound != null)
+			p.playSound(lc, pullSound, 10, 100);
 		cooldownLogic.addPlayer(p);
 		if (noFallDamage)
 			NoFallDamage.addPlayer(p);

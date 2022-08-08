@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="maven-antrun-" default="main"  >
 <target name="main">
-  <copy file="/home/keule/Data/Eclipse/Java_Workspace/grapplinghook/target/grapplinghook-3.0.jar" todir="/home/keule/Data/Minecraft/Server/Test Servers/1.19/plugins"/>
-  <copy file="/home/keule/Data/Eclipse/Java_Workspace/grapplinghook/target/grapplinghook-3.0.jar" todir="/home/keule/Data/Minecraft/Server/Test Servers/1.8/plugins"/>
+  <copy file="/home/keule/Data/Eclipse/Java_Workspace/grapplinghook/target/grapplinghook-3.1.jar" todir="/home/keule/Data/Minecraft/Server/Test Servers/1.19/plugins"/>
+  <copy file="/home/keule/Data/Eclipse/Java_Workspace/grapplinghook/target/grapplinghook-3.1.jar" todir="/home/keule/Data/Minecraft/Server/Test Servers/1.9/plugins"/>
 </target>
 </project>

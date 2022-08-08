@@ -1,7 +1,7 @@
 main: de.keule.mc.grapplinghook.main.GHPlugin
 name: GrapplingHook
 author: Keule2
-version: 3.0
+version: 3.1
 description: Grappling Hook Plugin
 api-version: 1.13
 softdepend: [WorldGuard]
