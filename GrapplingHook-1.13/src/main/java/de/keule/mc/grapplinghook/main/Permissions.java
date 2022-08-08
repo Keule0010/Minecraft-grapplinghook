@@ -1,6 +1,7 @@
 package de.keule.mc.grapplinghook.main;
 
 public enum Permissions {
+	
 	/* CMDs */
 	TAB_COMPLETE("grapplinghook.tab.complete"), 
 	HELP("grapplinghook.cmd.help"),
@@ -45,7 +46,7 @@ public enum Permissions {
 	;
 
 	private final String PERM;
-
+	
 	private Permissions(String PERM) {
 		this.PERM = PERM;
 	}
